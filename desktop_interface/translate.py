@@ -56,5 +56,5 @@ data = {
 
 resp = requests.post(url=url, headers=headers, data=data)
 resp_dict = json.loads(resp.text)
-ret = "".join([item["tgt"] for item in resp_dict['translateResult'][0]])
+ret = "\n".join(["".join([item["tgt"] for item in line]) for line in resp_dict['translateResult']])
 print(ret)
