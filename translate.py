@@ -4,7 +4,6 @@ import json
 import time
 import random
 import hashlib
-import cgi
 
 import sys
 import codecs
@@ -73,6 +72,7 @@ def translate(query):
     return ret
 
 def get_cgi_data():
+    import cgi
     form = cgi.FieldStorage()
     q = form.getvalue('q')
     return q
@@ -84,7 +84,10 @@ def to_html(text):
 if __name__ == '__main__':
     query = get_cgi_data()
     if not query:
-        query = "Bloody limbs lay about" #血淋淋的四肢横七遍野
+        if len(sys.argv)>1:
+            query = sys.argv[1]
+        else:
+            query = "Bloody limbs lay about" #血淋淋的四肢横七遍野
         result = translate(query)
         print(result)
     else:
