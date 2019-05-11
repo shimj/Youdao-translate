@@ -10,7 +10,7 @@ from translate import translate
 import subprocess
 
 def beautify(origin, translation):
-    return ''.join(['<div style="font-size: 18px">', translation,
+    return ''.join(['<div id="translation" style="font-size: 18px">', translation,
         '</div><br><br><div style="font-size: 18px;color: grey">', "原文：", origin, '</div>'])
 
 if __name__ == '__main__':
@@ -18,12 +18,19 @@ if __name__ == '__main__':
         text = sys.argv[1]
     else:
         text = subprocess.getoutput("pbpaste")
+    translate_result = translate(text)
 
     passcode_update_code_path = os.path.join(base_path, "update_passcode.py")
     js_code = '''function update_passcode() {
             $("#update_passcode").css("pointer-events","none");
             exec_shell("'''+passcode_update_code_path+'''",
                 ()=>window.BTT.callHandler('execute_assigned_actions_for_trigger', {closeFloatingHTMLMenu: 1}));
-        }'''
-    update(beautify(text, translate(text))+'''<br><br><div id=\"update_passcode\" style=\"text-align:right\">
+            }
+            document.addEventListener('keydown', (event) => {
+                const keyCode = event.keyCode;
+                if (keyCode === 67) {
+                    copyToClipboard($("#translation").text())
+                }
+            }, false);'''
+    update(beautify(text, translate_result)+'''<br><br><div id=\"update_passcode\" style=\"text-align:right\">
         <a href=\"javascript:update_passcode();\">Update Passcode</a></div>''', "", js_code)
