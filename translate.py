@@ -26,7 +26,7 @@ def get_sign(query, salt):
     sign = hashlib.md5(content.encode('utf-8')).hexdigest()
     return sign
 
-def translate(query):
+def translate(query, first_timeout=0.8):
     url = 'http://fanyi.youdao.com/translate_o?smartresult=dict&smartresult=rule'
 
     headers = {
@@ -66,7 +66,10 @@ def translate(query):
         'action': 'FY_BY_REALTlME'
     }
 
-    resp = requests.post(url=url, headers=headers, data=data)
+    try:
+        resp = requests.post(url=url, headers=headers, data=data, timeout=first_timeout)
+    except:
+        resp = requests.post(url=url, headers=headers, data=data)
     resp_dict = json.loads(resp.text)
     ret = "\n".join(["".join([item["tgt"] for item in line]) for line in resp_dict['translateResult']])
     return ret
