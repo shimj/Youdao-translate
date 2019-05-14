@@ -69,6 +69,8 @@ def translate(query, first_timeout=0.8):
     try:
         resp = requests.post(url=url, headers=headers, data=data, timeout=first_timeout)
     except:
+        import time
+        time.sleep(0.3)
         resp = requests.post(url=url, headers=headers, data=data)
     resp_dict = json.loads(resp.text)
     ret = "\n".join(["".join([item["tgt"] for item in line]) for line in resp_dict['translateResult']])
