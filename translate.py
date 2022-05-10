@@ -27,7 +27,7 @@ def get_sign(query, salt):
     return sign
 
 def translate(query, first_timeout=0.8):
-    url = 'http://fanyi.youdao.com/translate_o?smartresult=dict&smartresult=rule'
+    url = 'https://fanyi.youdao.com/translate_o?smartresult=dict&smartresult=rule'
 
     headers = {
         'Pragma': "no-cache",
@@ -58,7 +58,7 @@ def translate(query, first_timeout=0.8):
         'client': 'fanyideskweb',
         'salt': salt,
         'sign': sign,
-        'ts': ts,
+        'lts': ts,
         'bv': 'd26c1cc70023e993de6ae8831dd44989',
         'doctype': 'json',
         'version': '2.1',
